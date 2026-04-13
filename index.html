@@ -6,331 +6,123 @@
   <title>Avaliação de IE - Modelo Bar-On | Prof. Ricardo de Faria Barros</title>
   <style>
     :root {
-      --primary: #1a365d;
-      --secondary: #2b6cb0;
-      --accent: #38a169;
-      --gold: #d69e2e;
-      --bg: #f7fafc;
-      --text: #2d3748;
-      --light: #edf2f7;
-      --border: #cbd5e0;
-      --danger: #e53e3e;
-      --neutral: #718096;
-      --shadow: 0 4px 6px rgba(0,0,0,0.1);
-      --header-offset: 160px; /* Espaço para barra fixa */
+      --primary: #1a365d; --secondary: #2b6cb0; --accent: #38a169;
+      --gold: #d69e2e; --bg: #f7fafc; --text: #2d3748;
+      --light: #edf2f7; --border: #cbd5e0; --danger: #e53e3e;
+      --neutral: #718096; --shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --header-offset: 160px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    html { scroll-padding-top: 190px; }
     body { background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 40px; }
     
-    /* BARRA DE PROGRESSO FIXA NO TOPO */
-    .progress-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 1000;
-      padding: 12px 20px;
-      transition: all 0.3s ease;
-    }
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 12px;
-      background: #e2e8f0;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 10px;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
-      width: 0%;
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    /* Efeito Shimmer */
-    .progress-bar-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 2s infinite;
-    }
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
+    .progress-container { position: fixed; top: 0; left: 0; right: 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; padding: 12px 20px; }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+    .progress-bar-bg { width: 100%; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%); width: 0%; transition: width 0.4s ease; border-radius: 10px; }
+    .progress-bar-fill::after { content: ''; position: absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: shimmer 2s infinite; }
+    @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
     
-    /* SELOS DE CONQUISTA */
-    .badges-container {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .badge {
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      opacity: 0.4;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      background: var(--light);
-      color: var(--neutral);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .badge.unlocked {
-      opacity: 1;
-      background: linear-gradient(135deg, #f6e05e 0%, var(--gold) 100%);
-      color: #744210;
-      border-color: #d69e2e;
-      transform: scale(1.05);
-      box-shadow: 0 2px 8px rgba(214, 158, 46, 0.4);
-    }
-    .badge-icon { font-size: 1rem; }
+    .badges-container { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+    .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; opacity: 0.4; transition: all 0.4s; background: var(--light); color: var(--neutral); border: 1px solid var(--border); display: flex; align-items: center; gap: 4px; }
+    .badge.unlocked { opacity: 1; background: linear-gradient(135deg, #f6e05e 0%, var(--gold) 100%); color: #744210; border-color: #d69e2e; transform: scale(1.05); box-shadow: 0 2px 8px rgba(214, 158, 46, 0.4); }
+    .badge-icon { font-size: 0.9rem; }
     
-    header { 
-      background: var(--primary); 
-      color: white; 
-      padding: 2rem 1rem; 
-      text-align: center; 
-      margin-top: var(--header-offset);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    header h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
-    header p { font-size: 0.9rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+    header { background: var(--primary); color: white; padding: 2rem 1rem; text-align: center; margin-top: var(--header-offset); }
+    header h1 { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    header p { font-size: 0.85rem; opacity: 0.9; max-width: 700px; margin: 0 auto; }
 
     .container { max-width: 850px; margin: 0 auto; padding: 1rem; }
+    .disclaimer { background: #fffbeb; border-left: 4px solid #d69e2e; padding: 1rem; margin: 1rem 0; font-size: 0.85rem; border-radius: 4px; color: #744210; }
+    .card { background: white; border-radius: 10px; box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem; }
     
-    .disclaimer { 
-      background: #fffbeb; 
-      border-left: 4px solid #d69e2e; 
-      padding: 1rem; 
-      margin: 1rem 0; 
-      font-size: 0.9rem; 
-      border-radius: 4px; 
-      color: #744210;
-    }
+    .scale-legend-wrapper { position: sticky; top: calc(var(--header-offset) - 20px); z-index: 999; margin: 0 0 1.5rem; }
+    .scale-legend { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--secondary); box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 6px; }
+    .scale-legend span { font-weight: 600; color: var(--text); font-size: 0.75rem; }
+    .scale-legend .neutral { background: var(--neutral); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
 
-    .card { 
-      background: white; 
-      border-radius: 10px; 
-      box-shadow: var(--shadow); 
-      padding: 1.5rem; 
-      margin-bottom: 1.5rem; 
-    }
-    
-    /* LEGENDA GERAL FIXA */
-    .scale-legend-wrapper { 
-      position: sticky; 
-      top: calc(var(--header-offset) - 20px); 
-      z-index: 999; 
-      margin: 0 0 1.5rem; 
-      transition: top 0.3s;
-    }
-    .scale-legend {
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      background: white; 
-      padding: 10px 12px; 
-      border-radius: 8px;
-      border: 2px solid var(--secondary); 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      flex-wrap: wrap; 
-      gap: 6px;
-    }
-    .scale-legend span { font-weight: 600; color: var(--text); font-size: 0.8rem; }
-    .scale-legend .neutral { background: var(--neutral); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
-
-    /* LEGENDAS POR BLOCO */
-    .block-legend {
-      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
-      border: 1px solid var(--border); 
-      border-radius: 8px;
-      padding: 8px 12px; 
-      margin-bottom: 1.2rem; 
-      display: flex; 
-      justify-content: space-between;
-      flex-wrap: wrap; 
-      gap: 4px; 
-      font-size: 0.75rem; 
-      color: #4a5568;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
-    }
-    .block-legend strong { color: var(--primary); font-weight: 700; }
+    .block-legend { background: #f8f9fa; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-size: 0.7rem; color: #4a5568; }
     .block-legend .n4 { color: var(--secondary); font-weight: 700; }
 
-    /* FIELDSETS E QUESTÕES */
-    fieldset { 
-      border: 1px solid var(--border); 
-      border-radius: 12px; 
-      padding: 1.5rem; 
-      margin-bottom: 1.5rem; 
-      background: white;
-      transition: all 0.2s ease;
-    }
-    fieldset:hover {
-      border-color: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-    }
-    legend { 
-      font-weight: 700; 
-      color: var(--primary); 
-      padding: 0 10px; 
-      background: white; 
-      font-size: 1.1rem; 
-      margin-bottom: 0.8rem; 
-    }
-    
-    .question { margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px dashed var(--border); }
+    fieldset { border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.2rem; background: white; }
+    legend { font-weight: 700; color: var(--primary); padding: 0 8px; background: white; font-size: 1rem; margin-bottom: 0.5rem; }
+    .question { margin-bottom: 1.2rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
     .question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .question p { margin-bottom: 0.8rem; font-weight: 500; color: var(--text); font-size: 1rem; }
+    .question p { margin-bottom: 0.6rem; font-weight: 500; color: var(--text); font-size: 0.95rem; }
 
-    .options { display: flex; flex-wrap: wrap; gap: 10px; }
-    .options label {
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      background: var(--light); padding: 10px 12px; border-radius: 8px;
-      cursor: pointer; font-weight: 500; transition: all 0.2s; border: 2px solid transparent;
-      flex: 1 1 auto; min-width: 70px; font-size: 0.9rem;
-      position: relative;
-    }
-    .options label:hover { background: #e2e8f0; transform: translateY(-2px); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options label { display: flex; align-items: center; justify-content: center; gap: 5px; background: var(--light); padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s; border: 2px solid transparent; flex: 1 1 auto; min-width: 65px; font-size: 0.85rem; position: relative; }
+    .options label:hover { background: #e2e8f0; transform: translateY(-1px); }
     .options input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; }
     .options input[type="radio"]:checked + span { color: var(--primary); font-weight: 800; }
-    .options input[type="radio"]:checked ~ .checkmark { background: var(--secondary); border-color: var(--secondary); }
-    
-    /* Estado Ativo */
-    .options label:has(input:checked) { 
-      background: #bee3f8; 
-      border-color: var(--secondary); 
-      transform: scale(1.02);
-      box-shadow: 0 2px 5px rgba(43, 108, 176, 0.2);
-    }
-    .options label:has(input:checked) span { color: var(--primary); }
+    .options label:has(input:checked) { background: #bee3f8; border-color: var(--secondary); transform: scale(1.02); }
 
-    /* ALERTAS E ERROS */
-    .error-msg { color: var(--danger); background: #fff5f5; padding: 12px; border-radius: 8px; margin: 1rem 0; display: none; font-weight: 600; text-align: center; border: 1px solid #fed7d7; }
-    
-    .btn { 
-      background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); 
-      color: white; 
-      border: none; 
-      padding: 1rem; 
-      font-size: 1.1rem; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      width: 100%; 
-      font-weight: 700; 
-      transition: all 0.3s; 
-      margin-top: 1.5rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.2); filter: brightness(1.1); }
-    .btn:disabled { background: #a0aec0; cursor: not-allowed; transform: none; box-shadow: none; filter: none; }
+    .error-msg { color: var(--danger); background: #fff5f5; padding: 10px; border-radius: 8px; margin: 1rem 0; display: none; font-weight: 600; text-align: center; border: 1px solid #fed7d7; }
+    .btn { background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); color: white; border: none; padding: 1rem; font-size: 1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; transition: all 0.3s; margin-top: 1rem; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .btn:disabled { background: #a0aec0; cursor: not-allowed; }
 
-    /* BIAS ALERT */
-    .bias-alert {
-      background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
-      border: 2px solid #ed8936;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      display: none;
-      animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 4px 10px rgba(237, 137, 54, 0.2);
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .bias-alert h3 { color: #c05621; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
-    .bias-alert p { color: #2d3748; font-size: 0.95rem; line-height: 1.7; }
-    .bias-alert ul { margin: 10px 0 15px 20px; color: #4a5568; }
-    .bias-alert li { margin-bottom: 6px; }
+    #results { display: none; animation: fadeIn 0.5s ease; margin-top: 2rem; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .score-bar { height: 14px; background: #edf2f7; border-radius: 8px; margin: 0.6rem 0; overflow: hidden; }
+    .score-fill { height: 100%; transition: width 0.8s ease; border-radius: 8px; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+    .result-card { background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--secondary); margin-bottom: 0.8rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .result-card h4 { margin-bottom: 0.4rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
+    .result-card p { margin: 0; font-size: 0.85rem; color: #4a5568; }
+    .humor-box { background: #e6fffa; border-left: 4px solid #319795; padding: 1.2rem; margin: 1.2rem 0; border-radius: 8px; font-style: italic; color: #234e52; font-size: 0.95rem; }
+    .tip-box { background: #fffbeb; border-left: 4px solid #d69e2e; padding: 1.2rem; margin: 1.2rem 0; border-radius: 8px; }
+    .tip-box ul { margin-left: 1.2rem; margin-top: 0.8rem; }
+    .tip-box li { margin-bottom: 0.6rem; line-height: 1.5; font-size: 0.9rem; }
+    .quote-prof { margin-top: 1.2rem; padding: 1rem; background: white; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.9rem; line-height: 1.6; }
+    .quote-prof strong { color: var(--primary); display: block; margin-bottom: 0.4rem; font-size: 0.95rem; }
 
-    /* RESULTADOS */
-    #results { animation: fadeIn 0.6s ease; margin-top: 2rem; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .score-bar { height: 16px; background: #edf2f7; border-radius: 8px; margin: 0.8rem 0; overflow: hidden; }
-    .score-fill { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 8px; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
-    
-    .result-card { background: white; padding: 1.2rem; border-radius: 10px; border-left: 5px solid var(--secondary); margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .result-card h4 { margin-bottom: 0.5rem; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
-    .result-card p { margin: 0; font-size: 0.95rem; color: #4a5568; }
-    
-    .humor-box { background: #e6fffa; border-left: 5px solid #319795; padding: 1.5rem; margin: 1.5rem 0; border-radius: 10px; font-style: italic; color: #234e52; font-size: 1.05rem; }
-    .tip-box { background: #fffbeb; border-left: 5px solid #d69e2e; padding: 1.5rem; margin: 1.5rem 0; border-radius: 10px; }
-    .tip-box ul { margin-left: 1.2rem; margin-top: 1rem; }
-    .tip-box li { margin-bottom: 0.8rem; line-height: 1.6; font-size: 0.95rem; }
-    
-    .quote-prof {
-      margin-top: 1.5rem; 
-      padding: 1.2rem; 
-      background: white; 
-      border-radius: 8px; 
-      border: 1px solid #e2e8f0;
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    .quote-prof strong { color: var(--primary); display: block; margin-bottom: 0.5rem; font-size: 1.05rem; }
+    footer { text-align: center; margin-top: 2rem; color: #718096; font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .copyright-badge { background: #2d3748; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; margin-top: 0.4rem; display: inline-block; }
 
-    footer { text-align: center; margin-top: 3rem; color: #718096; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-    .copyright-badge { background: #2d3748; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; margin-top: 0.5rem; display: inline-block; }
+    .print-btn { background: linear-gradient(135deg, #2b6cb0 0%, #1a365d 100%); color: white; border: none; padding: 0.9rem; font-size: 1rem; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; transition: all 0.3s; margin: 1rem 0; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .print-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+
+    .print-tip { font-size: 0.8rem; color: #718096; text-align: center; margin: 0.4rem 0 1.5rem; font-style: italic; }
+    .print-header, .print-footer { display: none; }
 
     @media (max-width: 600px) {
-      :root { --header-offset: 180px; }
-      header h1 { font-size: 1.4rem; }
-      .scale-legend, .block-legend { flex-direction: column; text-align: center; gap: 3px; font-size: 0.7rem; padding: 8px; }
+      :root { --header-offset: 170px; }
+      header h1 { font-size: 1.3rem; }
+      .scale-legend, .block-legend { flex-direction: column; text-align: center; gap: 3px; font-size: 0.65rem; padding: 6px; }
       .options { flex-direction: column; }
-      .options label { width: 100%; justify-content: flex-start; padding: 10px; }
-      .badges-container { flex-direction: column; align-items: stretch; gap: 6px; }
+      .options label { width: 100%; justify-content: flex-start; padding: 8px; }
+      .badges-container { flex-direction: column; align-items: stretch; gap: 5px; }
       .badge { justify-content: center; }
+    }
+
+    @media print {
+      body { background: white; font-size: 10pt; line-height: 1.4; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .progress-container, header, .disclaimer, #identCard, .intro-card, .card:first-of-type, .scale-legend-wrapper, fieldset, .btn, footer, #validationError, #questionsContainer { display: none !important; }
+      #results { display: block !important; visibility: visible !important; position: static !important; margin: 0; padding: 15px; background: white; color: #2d3748; }
+      #results * { visibility: visible !important; }
+      .card { box-shadow: none; border: none; padding: 0; margin: 0; background: transparent; }
+      .result-card, .humor-box, .tip-box { break-inside: avoid; page-break-inside: avoid; border: 1px solid #cbd5e0; margin-bottom: 10px; background: white; }
+      .score-bar { border: 1px solid #ccc; background: #eee; }
+      .score-fill { background: #3182ce !important; }
+      .print-header, .print-footer { display: block !important; }
+      .print-header { text-align: center; border-bottom: 3px solid #2b6cb0; padding-bottom: 10px; margin-bottom: 15px; }
+      .print-header h2 { color: #1a365d; margin: 0 0 4px; font-size: 16pt; }
+      .print-header p { color: #4a5568; margin: 0; font-size: 9pt; }
+      .print-footer { margin-top: 25px; padding-top: 10px; border-top: 1px solid #cbd5e0; text-align: center; font-size: 8pt; color: #718096; page-break-before: always; }
+      .print-tip { display: none; }
     }
   </style>
 </head>
 <body>
   
-  <!-- BARRA DE PROGRESSO E SELOS FIXOS -->
   <div class="progress-container">
-    <div class="progress-header">
-      <span>📊 Seu Progresso</span>
-      <span class="progress-text" id="progressText">0/45 questões (0%)</span>
-    </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="progressBar"></div>
-    </div>
+    <div class="progress-header"><span>📊 Seu Progresso</span><span class="progress-text" id="progressText">0/60 questões (0%)</span></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
     <div class="badges-container">
-      <div class="badge" id="badge1">
-        <span class="badge-icon">🌱</span>Explorador Emocional (25%)
-      </div>
-      <div class="badge" id="badge2">
-        <span class="badge-icon">🎯</span>Estrategista de Si (50%)
-      </div>
-      <div class="badge" id="badge3">
-        <span class="badge-icon">🏆</span>Mestre do Florescimento (100%)
-      </div>
+      <div class="badge" id="badge1"><span class="badge-icon">🌱</span>Explorador Emocional (25%)</div>
+      <div class="badge" id="badge2"><span class="badge-icon">🎯</span>Estrategista de Si (50%)</div>
+      <div class="badge" id="badge3"><span class="badge-icon">💡</span>Líder Resiliente (75%)</div>
+      <div class="badge" id="badge4"><span class="badge-icon">🏆</span>Mestre do Florescimento (100%)</div>
     </div>
   </div>
 
@@ -340,359 +132,244 @@
   </header>
 
   <div class="container">
-    <div class="disclaimer">
-      <strong>⚠️ Aviso Importante:</strong> Este material é fruto de anos de pesquisa e prática docente. É de uso estritamente pedagógico e protegido por direitos autorais. <strong>Não compartilhe este link.</strong> Destina-se exclusivamente aos alunos da disciplina para fixação de conteúdo e autoavaliação guiada.
+    <div class="disclaimer"><strong>⚠️ Aviso Importante:</strong> Este material é fruto de anos de pesquisa e prática docente. É de uso estritamente pedagógico e protegido por direitos autorais. <strong>Não compartilhe este link.</strong> Destina-se exclusivamente aos alunos da disciplina.</div>
+
+    <!-- IDENTIFICAÇÃO OPCIONAL + PRIVACIDADE -->
+    <div class="card" id="identCard" style="background: #f8fafc; border: 1px solid var(--border);">
+      <h3 style="margin-bottom: 0.6rem; color: var(--primary); font-size: 1.05rem;">👤 Identificação (Opcional)</h3>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+        <input type="text" id="nomeAluno" placeholder="Seu nome completo (opcional)" style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; font-size:0.95rem;">
+        <input type="date" id="dataAvaliacao" style="width:100%; padding:0.7rem; border:1px solid var(--border); border-radius:6px; font-size:0.95rem;">
+      </div>
+      <div style="background: #e6fffa; padding: 0.8rem; border-radius: 6px; font-size: 0.8rem; color: #234e52; line-height: 1.4; border: 1px solid #b2f5ea;">
+        🔒 <strong>Proteção Total de Dados:</strong> Suas respostas e identificação ficam <strong>apenas neste dispositivo</strong> (celular, tablet ou notebook). Nada é enviado para servidores, nuvem ou redes externas. Tudo é processado localmente no seu navegador. Privacidade absoluta e garantia de anonimato se preferir não se identificar.
+      </div>
+    </div>
+
+    <!-- 🆕 INTRODUÇÃO PEDAGÓGICA -->
+    <div class="card intro-card" style="background: #f0f7ff; border-left: 4px solid var(--secondary);">
+      <h3 style="margin-bottom: 0.8rem; color: var(--primary); font-size: 1.1rem;">📖 Orientação Inicial: Autenticidade Antes de Tudo</h3>
+      <p style="margin-bottom: 0.8rem; line-height: 1.6;">Esta não é uma entrevista de emprego. Não é uma prova com gabarito único. Não é uma versão editada ou "polida" da sua vida para impressionar ninguém.</p>
+      <p style="margin-bottom: 0.8rem; line-height: 1.6;">Este é um espelho. E espelhos só funcionam quando nos encaramos de frente, sem filtros. Ao responder, busque ser <strong>autêntico e verdadeiro</strong> consigo mesmo. Não seja excessivamente rigoroso(a) a ponto de se punir, nem complacente a ponto de mascarar áreas que pedem atenção. A inteligência emocional floresce na <strong>honestidade moderada</strong>.</p>
+      <p style="margin-bottom: 0.8rem; line-height: 1.6;">Para cada afirmação, marque o ponto da escala que <strong>mais se aproxima do que você realmente pensa, sente, age e considera</strong> no seu dia a dia — especialmente nos últimos três meses. Confie na sua primeira leitura. Não há certo ou errado, apenas o seu ponto de partida.</p>
+      <p style="font-style: italic; color: var(--neutral); margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 0.8rem;">"O crescimento começa onde a autocrítica cede espaço à autoobservação curiosa. Boa jornada."</p>
     </div>
 
     <div class="card">
       <h2>📋 Instruções</h2>
       <p>Responda com base nos <strong>últimos 3 meses</strong>. Não existe resposta certa ou errada. Seja honesto consigo mesmo.</p>
-      
       <div class="scale-legend-wrapper">
         <div class="scale-legend">
-          <span>1 = Nunca</span><span>2 = Raramente</span><span>3 = Às vezes</span>
-          <span class="neutral">4 = NEUTRO</span>
-          <span>5 = Frequentemente</span><span>6 = Quase sempre</span><span>7 = Sempre</span>
+          <span>1 = Nunca</span><span>2 = Raramente</span><span>3 = Às vezes</span><span class="neutral">4 = NEUTRO</span><span>5 = Frequentemente</span><span>6 = Quase sempre</span><span>7 = Sempre</span>
         </div>
       </div>
-      <p style="color:var(--danger); font-size:0.9rem; text-align:center; margin-top: 10px;">⚠️ Todas as 45 questões devem ser respondidas para gerar o relatório.</p>
+      <p style="color:var(--danger); font-size:0.85rem; text-align:center; margin-top:8px;">⚠️ Todas as 60 questões devem ser respondidas para gerar o relatório.</p>
     </div>
 
     <form id="eqForm" novalidate>
-      <template id="legendTpl">
-        <div class="block-legend">
-          <span>1-Nunca</span><span>2-Raramente</span><span>3-Às vezes</span>
-          <span class="n4">4-NEUTRO</span>
-          <span>5-Frequentemente</span><span>6-Quase sempre</span><span>7-Sempre</span>
-        </div>
-      </template>
-
-      <!-- BLOCOS GERADOS VIA JS PARA MANUTENÇÃO LIMPA -->
-      <!-- A estrutura HTML será injetada pelo script para garantir as 45 questões -->
+      <template id="legendTpl"><div class="block-legend"><span>1-Nunca</span><span>2-Raramente</span><span>3-Às vezes</span><span class="n4">4-NEUTRO</span><span>5-Frequentemente</span><span>6-Quase sempre</span><span>7-Sempre</span></div></template>
       <div id="questionsContainer"></div>
 
-      <!-- ALERTA DE VIÉS (SHADOW CHECK) -->
-      <div id="biasAlert" class="bias-alert">
-        <h3>🚦 Alerta de Autoavaliação</h3>
-        <p><strong>Prof. Ricardo observa:</strong> Detectamos um padrão em suas respostas (tudo 7 ou tudo 1). Lembre-se: a inteligência emocional se desenvolve através da <strong>vulnerabilidade</strong> e do autoconhecimento honesto. Respostas sempre no extremo podem indicar:</p>
-        <ul>
-          <li>Dificuldade em reconhecer nuances e áreas de desenvolvimento</li>
-          <li>Tendência ao perfeccionismo ou autocrítica excessiva</li>
-          <li>Resposta no "piloto automático" sem reflexão profunda</li>
-        </ul>
-        <p style="margin-top: 10px; font-style: italic;">"Crescimento real começa quando aceitamos que somos humanos em constante evolução, não produtos acabados."</p>
-      </div>
-
-      <div id="validationError" class="error-msg">⚠️ Por favor, responda todas as 45 questões antes de gerar seu relatório.</div>
+      <div id="validationError" class="error-msg">⚠️ Por favor, responda todas as 60 questões antes de gerar seu relatório.</div>
       <button type="submit" class="btn">🔍 Gerar Meu Relatório de Consultoria</button>
     </form>
 
-    <div id="results" style="display:none;">
+    <div id="results">
+      <div class="print-header" id="printHeader">
+        <h2>📊 Relatório de Inteligência Emocional - Modelo Bar-On</h2>
+        <p><strong>Aluno:</strong> <span id="printNome">__________________</span> | <strong>Data:</strong> <span id="printData">___/___/______</span></p>
+        <p>Disciplina: Inteligência Emocional e Autogestão | Pós-Graduação IBMEC Brasília-DF</p>
+      </div>
+
       <div class="card">
-        <h2>📊 Seu Perfil de Inteligência Emocional (Modelo Bar-On)</h2>
+        <h2>📊 Seu Perfil de Inteligência Emocional</h2>
         <div id="globalScore"></div>
         <div id="domainScores"></div>
         <div id="factorScores"></div>
       </div>
       <div class="humor-box" id="humorFeedback"></div>
       <div class="tip-box" id="consultoriaTips"></div>
-      <button class="btn" onclick="window.print()" style="margin-top:1rem; background:#4a5568;">🖨️ Imprimir / Salvar PDF</button>
+      
+      <button type="button" class="print-btn" onclick="gerarPDF()">
+        📥 Salvar Relatório em PDF
+      </button>
+      <p class="print-tip">💡 Na janela que abrir, selecione <strong>"Salvar como PDF"</strong> como destino. Clique em Salvar.</p>
+
+      <div class="print-footer">
+        <p><strong>© Prof. Ricardo de Faria Barros</strong> | Material exclusivo para fins pedagógicos</p>
+        <p>Gerado em: <span id="printDataFooter">___/___/______</span></p>
+        <p style="color:#a0aec0; font-size:7pt; margin-top:4px;">Documento pessoal e intransferível. Processado 100% localmente no seu dispositivo.</p>
+      </div>
     </div>
   </div>
 
   <footer>
     <p>© Prof. Ricardo de Faria Barros | Disciplina: Inteligência Emocional e Autogestão | IBMEC Brasília-DF</p>
     <div class="copyright-badge">PROIBIDA A REPRODUÇÃO OU COMPARTILHAMENTO NÃO AUTORIZADO</div>
-    <p style="margin-top:0.5rem; font-size:0.85rem;">Material exclusivo para fins pedagógicos. Desenvolvido para fixação de conteúdos e prática reflexiva em sala de aula.</p>
+    <p style="margin-top:0.4rem; font-size:0.8rem;">Material exclusivo para fins pedagógicos. Desenvolvido para fixação de conteúdos e prática reflexiva em sala de aula.</p>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      
-      // 1. DADOS DAS QUESTÕES (45 ITENS)
+      document.getElementById('dataAvaliacao').valueAsDate = new Date();
+
       const blocks = [
-        { id: 'b1', name: '1. Autoconsideração (Self-Regard)', qs: [
-          "Quando cometo um erro no trabalho ou nos estudos, consigo me perdoar sem ficar me criticando excessivamente.",
-          "Em situações sociais, me sinto confortável sendo quem sou, sem precisar impressionar os outros.",
-          "Quando pratico um esporte ou hobby, aceito minhas limitações sem me comparar de forma destrutiva."
-        ]},
-        { id: 'b2', name: '2. Autoconsciência Emocional', qs: [
-          "Consigo identificar claramente o que estou sentindo enquanto as emoções acontecem.",
-          "Percebo como meu estado emocional afeta minha performance no trabalho ou nas tarefas do dia a dia.",
-          "Quando assisto a um filme, leio ou ouço música, percebo como isso mexe com minhas emoções."
-        ]},
-        { id: 'b3', name: '3. Assertividade', qs: [
-          "No trabalho ou em grupo, expresso minhas opiniões mesmo quando são diferentes da maioria.",
-          "Consigo dizer 'não' para pedidos quando não tenho disponibilidade, sem culpa excessiva.",
-          "Quando algo me incomoda, converso sobre isso de forma direta e respeitosa."
-        ]},
-        { id: 'b4', name: '4. Independência', qs: [
-          "Tomo decisões importantes baseado em meus valores, mesmo que outros discordem.",
-          "Não preciso da aprovação constante dos outros para me sentir bem com minhas escolhas.",
-          "Sigo em frente com projetos pessoais mesmo sem incentivo ou reconhecimento externo."
-        ]},
-        { id: 'b5', name: '5. Autorrealização', qs: [
-          "Sinto que estou usando meus talentos de forma significativa no trabalho ou estudos.",
-          "Tenho metas pessoais claras e estou ativamente trabalhando para alcançá-las.",
-          "Dedico tempo para atividades que me fazem crescer como pessoa (leitura, arte, esporte, voluntariado)."
-        ]},
-        { id: 'b6', name: '6. Empatia', qs: [
-          "Percebo quando alguém está desconfortável, mesmo que tente esconder.",
-          "Em discussões, consigo me colocar no lugar do outro para entender seu ponto de vista.",
-          "Quando vejo notícias sobre sofrimento alheio, sinto compaixão genuína."
-        ]},
-        { id: 'b7', name: '7. Responsabilidade Social', qs: [
-          "Participo ativamente de ações que beneficiam minha comunidade ou grupo.",
-          "Penso no impacto das minhas ações no grupo, não apenas nos meus resultados individuais.",
-          "Adoto práticas sustentáveis e de respeito ao espaço público mesmo quando ninguém está olhando."
-        ]},
-        { id: 'b8', name: '8. Relacionamento Interpessoal', qs: [
-          "Tenho relações próximas onde posso ser autêntico e confiar nas pessoas.",
-          "Consigo manter vínculos ao longo do tempo, investindo energia neles.",
-          "Me relaciono bem com pessoas diferentes de mim (idade, cultura, personalidade)."
-        ]},
-        { id: 'b9', name: '9. Tolerância ao Estresse', qs: [
-          "Em períodos de alta pressão, mantenho a capacidade de funcionar bem sem 'travar'.",
-          "Quando enfrento contratempos pessoais, consigo lidar sem desmoronar emocionalmente.",
-          "Em situações de incerteza, mantenho a calma e foco no que posso controlar."
-        ]},
-        { id: 'b10', name: '10. Controle de Impulsos', qs: [
-          "Quando sinto raiva ou frustração, penso antes de agir ou falar.",
-          "Consigo controlar impulsos de consumo quando isso prejudica meus objetivos.",
-          "Em discussões acaloradas, evito dizer coisas ofensivas ou tomar decisões precipitadas."
-        ]},
-        { id: 'b11', name: '11. Teste de Realidade', qs: [
-          "Quando tenho uma preocupação, busco fatos concretos antes de tirar conclusões.",
-          "Consigo diferenciar fato objetivo da minha interpretação em situações do dia a dia.",
-          "Quando recebo feedback, avalio de forma realista se faz sentido, sem negar nem exagerar."
-        ]},
-        { id: 'b12', name: '12. Flexibilidade', qs: [
-          "Quando meus planos mudam, me ajusto rapidamente sem irritação excessiva.",
-          "Consigo mudar de opinião quando apresentadas novas informações convincentes.",
-          "Adapto minha abordagem quando percebo que o método atual não está funcionando."
-        ]},
-        { id: 'b13', name: '13. Resolução de Problemas', qs: [
-          "Quando enfrento um problema, consigo identificar claramente qual é o problema real.",
-          "Gero múltiplas opções de solução antes de decidir como agir.",
-          "Implemento soluções e avalio se estão funcionando, ajustando quando necessário."
-        ]},
-        { id: 'b14', name: '14. Otimismo', qs: [
-          "Mesmo em momentos difíceis, mantenho a esperança de que as coisas podem melhorar.",
-          "Encaro desafios como oportunidades de aprendizado, não como ameaças.",
-          "Acredito que meus esforços valem a pena e que posso influenciar positivamente meu futuro."
-        ]},
-        { id: 'b15', name: '15. Felicidade', qs: [
-          "Sinto satisfação e prazer na maior parte do tempo, com os altos e baixos normais.",
-          "Aprecio momentos simples do dia a dia (conversas, refeições, hobbies, natureza).",
-          "Sinto que minha vida tem significado e propósito, não sou apenas um 'zumbi' cumprindo obrigações."
-        ]}
+        { name: '1. Autoavaliação (Self-Regard)', qs: ["Quando cometo um erro no trabalho ou nos estudos, consigo me perdoar sem ficar me criticando excessivamente.","Em situações sociais, me sinto confortável sendo quem sou, sem precisar impressionar os outros.","Quando pratico um esporte ou hobby, aceito minhas limitações sem me comparar de forma destrutiva.","Quando faço uma compra por impulso e me arrependo depois, consigo me perdoar rapidamente e seguir em frente sem me culpar por dias."] },
+        { name: '2. Autoconsciência Emocional', qs: ["Consigo identificar claramente o que estou sentindo enquanto as emoções acontecem.","Percebo como meu estado emocional afeta minha performance no trabalho ou nas tarefas do dia a dia.","Quando assisto a um filme, leio ou ouço música, percebo como isso mexe com minhas emoções.","Percebo quando meu tom de voz muda (fica mais agudo ou ríspido) antes mesmo de notar que estou irritado em uma conversa cotidiana."] },
+        { name: '3. Assertividade', qs: ["No trabalho ou em grupo, expresso minhas opiniões mesmo quando são diferentes da maioria.","Consigo dizer 'não' para pedidos quando não tenho disponibilidade, sem culpa excessiva.","Quando algo me incomoda, converso sobre isso de forma direta e respeitosa.","Em um restaurante ou loja, consigo solicitar a troca de um prato ou produto com educação e firmeza, mesmo se o atendimento estiver apressado."] },
+        { name: '4. Independência', qs: ["Tomo decisões importantes baseado em meus valores, mesmo que outros discordem.","Não preciso da aprovação constante dos outros para me sentir bem com minhas escolhas.","Sigo em frente com projetos pessoais mesmo sem incentivo ou reconhecimento externo.","Quando meu time ou família escolhe um plano de lazer que não me agrada, consigo participar sem ressentimento ou exigir que tudo seja do meu jeito."] },
+        { name: '5. Autorrealização', qs: ["Sinto que estou usando meus talentos de forma significativa no trabalho ou estudos.","Tenho metas pessoais claras e estou ativamente trabalhando para alcançá-las.","Dedico tempo para atividades que me fazem crescer como pessoa (leitura, arte, esporte, voluntariado).","Reservo tempo para um hobby ou projeto pessoal mesmo quando a agenda de trabalho está lotada, porque sei que isso recarrega minha energia vital."] },
+        { name: '6. Empatia', qs: ["Percebo quando alguém está desconfortável, mesmo que tente esconder.","Em discussões, consigo me colocar no lugar do outro para entender seu ponto de vista.","Quando vejo notícias sobre sofrimento alheio, sinto compaixão genuína.","Notei quando um amigo ou colega mudou de assunto abruptamente e, em vez de insistir, respeitei o espaço e perguntei depois se estava tudo bem."] },
+        { name: '7. Responsabilidade Social', qs: ["Participo ativamente de ações que beneficiam minha comunidade ou grupo.","Penso no impacto das minhas ações no grupo, não apenas nos meus resultados individuais.","Adoto práticas sustentáveis e de respeito ao espaço público mesmo quando ninguém está olhando.","Em grupos de família ou amigos, evito fofocas e procuro redirecionar a conversa para um tom mais respeitoso, mesmo que seja o assunto do momento."] },
+        { name: '8. Relacionamento Interpessoal', qs: ["Tenho relações próximas onde posso ser autêntico e confiar nas pessoas.","Consigo manter vínculos ao longo do tempo, investindo energia neles.","Me relaciono bem com pessoas diferentes de mim (idade, cultura, personalidade).","Mantenho contato com pessoas importantes para mim através de gestos simples (uma mensagem, um café), sem esperar que elas tomem a iniciativa primeiro."] },
+        { name: '9. Tolerância ao Estresse', qs: ["Em períodos de alta pressão, mantenho a capacidade de funcionar bem sem 'travar'.","Quando enfrento contratempos pessoais, consigo lidar sem desmoronar emocionalmente.","Em situações de incerteza, mantenho a calma e foco no que posso controlar.","Quando o trânsito, uma fila ou um atraso fogem do meu controle, respiro fundo e uso o tempo extra para ouvir um podcast ou organizar pensamentos."] },
+        { name: '10. Controle de Impulsos', qs: ["Quando sinto raiva ou frustração, penso antes de agir ou falar.","Consigo controlar impulsos de consumo quando isso prejudica meus objetivos.","Em discussões acaloradas, evito dizer coisas ofensivas ou tomar decisões precipitadas.","Antes de responder a uma mensagem provocativa no WhatsApp, guardo o celular por alguns minutos e releio o que digitei antes de enviar."] },
+        { name: '11. Teste de Realidade', qs: ["Quando tenho uma preocupação, busco fatos concretos antes de tirar conclusões.","Consigo diferenciar fato objetivo da minha interpretação em situações do dia a dia.","Quando recebo feedback, avalio de forma realista se faz sentido, sem negar nem exagerar.","Quando recebo uma notícia impactante ou um boato, verifico a fonte original antes de compartilhar ou formar uma opinião definitiva."] },
+        { name: '12. Flexibilidade', qs: ["Quando meus planos mudam, me ajusto rapidamente sem irritação excessiva.","Consigo mudar de opinião quando apresentadas novas informações convincentes.","Adapto minha abordagem quando percebo que o método atual não está funcionando.","Se um compromisso social ou profissional é cancelado de última hora, consigo improvisar um plano alternativo sem perder o dia ou ficar frustrado."] },
+        { name: '13. Resolução de Problemas', qs: ["Quando enfrento um problema, consigo identificar claramente qual é o problema real.","Gero múltiplas opções de solução antes de decidir como agir.","Implemento soluções e avalio se estão funcionando, ajustando quando necessário.","Diante de um imprevisto doméstico ou técnico, listo mentalmente as opções viáveis antes de ligar para alguém pedir ajuda ou reclamar."] },
+        { name: '14. Otimismo', qs: ["Mesmo em momentos difíceis, mantenho a esperança de que as coisas podem melhorar.","Encaro desafios como oportunidades de aprendizado, não como ameaças.","Acredito que meus esforços valem a pena e que posso influenciar positivamente meu futuro.","Ao começar uma nova semana, foco no que posso construir com ela, em vez de me antecipar com tudo que pode dar errado."] },
+        { name: '15. Felicidade', qs: ["Sinto satisfação e prazer na maior parte do tempo, com os altos e baixos normais.","Aprecio momentos simples do dia a dia (conversas, refeições, hobbies, natureza).","Sinto que minha vida tem significado e propósito, não sou apenas um 'zumbi' cumprindo obrigações.","Consigo aproveitar um momento simples de lazer (um banho demorado, um pôr do sol, uma música) sem sentir culpa por não estar 'produzindo'."] }
       ];
 
       const container = document.getElementById('questionsContainer');
       const legendTpl = document.getElementById('legendTpl').innerHTML;
       let qCounter = 1;
-
-      // 2. INJEÇÃO HTML DOS BLOCOS E QUESTÕES
       blocks.forEach(block => {
         const fieldset = document.createElement('fieldset');
-        fieldset.innerHTML = `
-          <legend>${block.name}</legend>
-          ${legendTpl}
-        `;
-        
+        fieldset.innerHTML = `<legend>${block.name}</legend>${legendTpl}`;
         block.qs.forEach(qText => {
-          const div = document.createElement('div');
-          div.className = 'question';
+          const div = document.createElement('div'); div.className = 'question';
           div.innerHTML = `<p>${qCounter}. ${qText}</p><div class="options" data-name="q${qCounter}"></div>`;
-          fieldset.appendChild(div);
-          qCounter++;
+          fieldset.appendChild(div); qCounter++;
         });
         container.appendChild(fieldset);
       });
 
-      // 3. GERAÇÃO DOS RÁDIOS (1-7)
       document.querySelectorAll('.options').forEach(optDiv => {
         const name = optDiv.dataset.name;
-        for(let i=1; i<=7; i++) {
-          const lbl = document.createElement('label');
-          lbl.innerHTML = `<input type="radio" name="${name}" value="${i}"><span>${i}</span>`;
-          optDiv.appendChild(lbl);
+        for(let i=1; i<=7; i++) { const lbl = document.createElement('label'); lbl.innerHTML = `<input type="radio" name="${name}" value="${i}"><span>${i}</span>`; optDiv.appendChild(lbl); }
+      });
+
+      document.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="radio"][name^="q"]')) {
+          const nextQ = e.target.closest('.question')?.nextElementSibling;
+          if (nextQ && nextQ.classList.contains('question')) nextQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
 
-      // 4. LÓGICA DE PROGRESSO E SELOS
       const progressText = document.getElementById('progressText');
       const progressBar = document.getElementById('progressBar');
-      const badge1 = document.getElementById('badge1');
-      const badge2 = document.getElementById('badge2');
-      const badge3 = document.getElementById('badge3');
-      const biasAlert = document.getElementById('biasAlert');
+      const badges = [document.getElementById('badge1'), document.getElementById('badge2'), document.getElementById('badge3'), document.getElementById('badge4')];
       
       function updateState() {
-        const radios = document.querySelectorAll('input[type="radio"]:checked');
-        const total = radios.length;
-        const max = 45;
-        const pct = (total / max) * 100;
-
-        // Atualizar Barra
-        progressBar.style.width = pct + '%';
-        progressText.textContent = `${total}/${max} questões (${Math.round(pct)}%)`;
-
-        // Desbloquear Selos
-        if(pct >= 25) badge1.classList.add('unlocked');
-        if(pct >= 50) badge2.classList.add('unlocked');
-        if(pct >= 99) badge3.classList.add('unlocked'); // 99% para evitar erro de float com 100 exato
-
-        // DETECÇÃO DE VIÉS (SHADOW CHECK)
-        // Verifica se as últimas 10+ respostas são todas iguais
-        if(total >= 10) {
-          const values = Array.from(radios).map(r => parseInt(r.value));
-          // Pega as últimas 10 para evitar bloquear quem respondeu tudo igual no inicio e mudou
-          const recent = values.slice(-10);
-          const allSame = recent.every(v => v === recent[0]);
-          const isExtreme = recent[0] === 1 || recent[0] === 7;
-          
-          if(allSame && isExtreme) {
-            biasAlert.style.display = 'block';
-          } else {
-            biasAlert.style.display = 'none';
-          }
-        } else {
-          biasAlert.style.display = 'none';
-        }
+        const total = document.querySelectorAll('input[type="radio"]:checked').length;
+        const pct = (total / 60) * 100;
+        progressBar.style.width = pct + '%'; progressText.textContent = `${total}/60 questões (${Math.round(pct)}%)`;
+        badges.forEach((b, i) => { if (pct >= (i + 1) * 25) b.classList.add('unlocked'); });
       }
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateState));
 
-      document.querySelectorAll('input[type="radio"]').forEach(r => {
-        r.addEventListener('change', updateState);
-      });
+      const factors = { autoavaliacao:[1,2,3,4], autoconsciencia:[5,6,7,8], assertividade:[9,10,11,12], independencia:[13,14,15,16], autorrealizacao:[17,18,19,20], empatia:[21,22,23,24], responsabilidade:[25,26,27,28], relacionamento:[29,30,31,32], tolerancia:[33,34,35,36], controle:[37,38,39,40], realidade:[41,42,43,44], flexibilidade:[45,46,47,48], problemas:[49,50,51,52], otimismo:[53,54,55,56], felicidade:[57,58,59,60] };
+      const domains = { intrapessoal:['autoavaliacao','autoconsciencia','assertividade','independencia','autorrealizacao'], interpessoal:['empatia','responsabilidade','relacionamento'], estresse:['tolerancia','controle'], adaptabilidade:['realidade','flexibilidade','problemas'], humor:['otimismo','felicidade'] };
+      const domainsMax = { intrapessoal:140, interpessoal:84, estresse:56, adaptabilidade:84, humor:56 };
+      const factorNames = { autoavaliacao:'Autoavaliação (Self-Regard)', autoconsciencia:'Autoconsciência Emocional', assertividade:'Assertividade', independencia:'Independência', autorrealizacao:'Autorrealização', empatia:'Empatia', responsabilidade:'Responsabilidade Social', relacionamento:'Relacionamento Interpessoal', tolerancia:'Tolerância ao Estresse', controle:'Controle de Impulsos', realidade:'Teste de Realidade', flexibilidade:'Flexibilidade', problemas:'Resolução de Problemas', otimismo:'Otimismo', felicidade:'Felicidade' };
 
-      // 5. CÁLCULO E RESULTADOS
-      const factors = {
-        autoconsideracao: {ids:[1,2,3], max:21, name:'Autoconsideração'},
-        autoconsciencia: {ids:[4,5,6], max:21, name:'Autoconsciência Emocional'},
-        assertividade: {ids:[7,8,9], max:21, name:'Assertividade'},
-        independencia: {ids:[10,11,12], max:21, name:'Independência'},
-        autorrealizacao: {ids:[13,14,15], max:21, name:'Autorrealização'},
-        empatia: {ids:[16,17,18], max:21, name:'Empatia'},
-        responsabilidade: {ids:[19,20,21], max:21, name:'Responsabilidade Social'},
-        relacionamento: {ids:[22,23,24], max:21, name:'Relacionamento Interpessoal'},
-        tolerancia: {ids:[25,26,27], max:21, name:'Tolerância ao Estresse'},
-        controle: {ids:[28,29,30], max:21, name:'Controle de Impulsos'},
-        realidade: {ids:[31,32,33], max:21, name:'Teste de Realidade'},
-        flexibilidade: {ids:[34,35,36], max:21, name:'Flexibilidade'},
-        problemas: {ids:[37,38,39], max:21, name:'Resolução de Problemas'},
-        otimismo: {ids:[40,41,42], max:21, name:'Otimismo'},
-        felicidade: {ids:[43,44,45], max:21, name:'Felicidade'}
-      };
-
-      const domains = {
-        intrapessoal: {keys:['autoconsideracao','autoconsciencia','assertividade','independencia','autorrealizacao'], max:105, name:'Intrapessoal'},
-        interpessoal: {keys:['empatia','responsabilidade','relacionamento'], max:63, name:'Interpessoal'},
-        estresse: {keys:['tolerancia','controle'], max:42, name:'Gestão do Estresse'},
-        adaptabilidade: {keys:['realidade','flexibilidade','problemas'], max:63, name:'Adaptabilidade'},
-        humor: {keys:['otimismo','felicidade'], max:42, name:'Humor Geral'}
-      };
-
-      function getFeedback(score, max) {
-        const pct = (score/max)*100;
-        if(pct >= 80) return {lvl:'🌟 Excelente', color:'#38a169', txt:'Domínio consolidado. Mantenha a consistência.'};
-        if(pct >= 60) return {lvl:'✅ Bom', color:'#3182ce', txt:'Base sólida. Foque em situações complexas.'};
-        if(pct >= 40) return {lvl:'⚠️ Atenção', color:'#d69e2e', txt:'Requer prática intencional e reflexão.'};
-        return {lvl:'🚨 Crítico', color:'#e53e3e', txt:'Gargalo de performance. Busque mentoria.'};
+      function getFeedback(score) {
+        const pct = (score/28)*100;
+        if(pct <= 50) return {lvl:'🌱 Em Desenvolvimento', color:'#a0aec0', txt:'Requer atenção prioritária. Prática deliberada e feedback são essenciais.'};
+        if(pct <= 75) return {lvl:'✅ Consolidando', color:'#3182ce', txt:'Base sólida em formação. Foque em consistência sob pressão.'};
+        if(pct <= 90) return {lvl:'🌟 Avançado', color:'#38a169', txt:'Alto domínio. Mantenha e modele esse comportamento para outros.'};
+        return {lvl:'🏆 Expert', color:'#d69e2e', txt:'Referência natural. Use para mentoria e cultura de equipe.'};
       }
 
       function getGlobalHumor(total) {
-        if(total >= 252) return "🥋✨ <strong>MESTRE JEDI DA IE:</strong> Você é referência de equilíbrio e entrega. Cuidado apenas para não cobrar dos outros o seu nível de maturidade. Use sua luz para iluminar, não para cegar.";
-        if(total >= 189) return "⚔️🔥 <strong>GUERREIRO EM TREINAMENTO:</strong> Excelente potencial. Você oscila entre a razão e a emoção de forma funcional, mas em crises agudas pode perder o fio. Treine a pausa consciente.";
-        if(total >= 126) return "🏗️ <strong>HUMANO EM CONSTRUÇÃO:</strong> Você tem consciência, mas a prática ainda é desafiadora. Foque em 1 competência por mês. O progresso não é linear.";
-        return "💣😰 <strong>ALERTA DE SISTEMA:</strong> Seus resultados indicam que as emoções estão no controle do volante. Respire. A IE é a habilidade do século XXI e você pode desenvolvê-la. Comece pelo básico: autoobservação.";
+        const pct = (total/420)*100;
+        if(pct <= 50) return "🌱 <strong>FASE DE PLANTIO:</strong> Você está no início da jornada. A IE é um músculo. Escolha 1 competência por mês e pratique com gentileza.";
+        if(pct <= 75) return "✅ <strong>FASE DE CRESCIMENTO:</strong> Reconhece seus padrões e ajusta rotas. Treine a pausa de 3 segundos antes de falar ou decidir.";
+        if(pct <= 90) return "🌟 <strong>FASE DE FRUTIFICAÇÃO:</strong> Combina consciência e ação com consistência. Cuidado com a autocrítica silenciosa.";
+        return "🏆 <strong>FASE DE MESTRIA:</strong> Sua IE é alicerce sólido. Mantenha a humildade e a curiosidade. O topo exige ventilação constante.";
       }
 
       document.getElementById('eqForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Validação final
-        const allChecked = document.querySelectorAll('input[type="radio"]:checked');
-        if(allChecked.length < 45) {
+        if(document.querySelectorAll('input[type="radio"]:checked').length < 60) {
           document.getElementById('validationError').style.display = 'block';
           document.getElementById('validationError').scrollIntoView({behavior:'smooth'});
           return;
         }
         document.getElementById('validationError').style.display = 'none';
 
-        // Cálculo Fatores
         let fRes = {};
         for(let k in factors) {
-          const sum = factors[k].ids.reduce((acc, id) => acc + parseInt(document.querySelector(`input[name="q${id}"]:checked`).value), 0);
-          fRes[k] = {score:sum, max:21, name:factors[k].name, ...getFeedback(sum, 21)};
+          const sum = factors[k].reduce((acc, id) => acc + parseInt(document.querySelector(`input[name="q${id}"]:checked`).value), 0);
+          fRes[k] = {score:sum, name:factorNames[k], ...getFeedback(sum)};
         }
-
-        // Cálculo Domínios
         let dRes = {};
         for(let d in domains) {
-          const sum = domains[d].keys.reduce((acc, k) => acc + fRes[k].score, 0);
-          dRes[d] = {score:sum, max:domains[d].max, name:domains[d].name, ...getFeedback(sum, domains[d].max)};
+          const sum = domains[d].reduce((acc, k) => acc + fRes[k].score, 0);
+          const max = domainsMax[d];
+          dRes[d] = {score:sum, max:max, name:d.charAt(0).toUpperCase() + d.slice(1), ...getFeedback(sum/4.5)};
         }
-
         const totalScore = Object.values(fRes).reduce((a,f)=>a+f.score, 0);
         
-        // Render Global
-        document.getElementById('globalScore').innerHTML = `
-          <h3>Pontuação Global: ${totalScore}/315</h3>
-          <div class="score-bar"><div class="score-fill" style="width:${(totalScore/315)*100}%"></div></div>
-          <p style="margin-top:1rem; font-size:1.1rem;">${getGlobalHumor(totalScore)}</p>
-        `;
+        document.getElementById('globalScore').innerHTML = `<h3>Pontuação Global: ${totalScore}/420</h3><div class="score-bar"><div class="score-fill" style="width:${(totalScore/420)*100}%"></div></div><p style="margin-top:0.8rem; font-size:1rem;">${getGlobalHumor(totalScore)}</p>`;
 
-        // Render Domínios
-        let dHTML = '<h3>📊 Por Domínio (Bar-On)</h3>';
+        let dHTML = '<h3>📊 Por Dimensão</h3>';
+        const domainLabels = { intrapessoal:'Intrapessoal (A Bússola Interna)', interpessoal:'Interpessoal (A Ponte Relacional)', estresse:'Gerenciamento de Estresse (O Coração Clínico)', adaptabilidade:'Adaptabilidade (O Sistema de Navegação)', humor:'Humor Geral (O Motor Afetivo)' };
         for(let d in dRes) {
           const r = dRes[d];
-          dHTML += `
-            <div class="result-card">
-              <h4>${r.name} <span style="font-size:0.9rem; color:#718096;">${r.score}/${r.max}</span></h4>
-              <div class="score-bar"><div class="score-fill" style="width:${(r.score/r.max)*100}%; background:${r.color}"></div></div>
-              <p><em>${r.lvl}</em> - ${r.txt}</p>
-            </div>`;
+          dHTML += `<div class="result-card"><h4>${domainLabels[d]} <span style="font-size:0.85rem; color:#718096;">${r.score}/${r.max}</span></h4><div class="score-bar"><div class="score-fill" style="width:${(r.score/r.max)*100}%; background:${r.color}"></div></div><p><em>${r.lvl}</em> - ${r.txt}</p></div>`;
         }
         document.getElementById('domainScores').innerHTML = dHTML;
 
-        // Render Fatores
-        let fHTML = '<h3>🔍 Detalhamento por Competência</h3><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.8rem; margin-top:1rem;">';
+        let fHTML = '<h3>🔍 Detalhamento por Fator</h3><div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.6rem; margin-top:0.8rem;">';
         for(let k in fRes) {
           const r = fRes[k];
-          fHTML += `<div style="background:#f8f9fa; padding:0.8rem; border-radius:6px; border-left:3px solid ${r.color};"><strong>${r.name}</strong>: ${r.score}/21 <span style="color:${r.color}; font-weight:600;">${r.lvl}</span></div>`;
+          fHTML += `<div style="background:#f8f9fa; padding:0.6rem; border-radius:6px; border-left:3px solid ${r.color};"><strong>${r.name}</strong>: ${r.score}/28 <span style="color:${r.color}; font-weight:600;">${r.lvl}</span></div>`;
         }
         fHTML += '</div>';
         document.getElementById('factorScores').innerHTML = fHTML;
 
-        // Consultoria
         const sorted = Object.values(fRes).sort((a,b)=>a.score-b.score).slice(0,3);
-        let tipsHTML = `<h3>🎓 Consultoria do Prof. Ricardo de Faria Barros</h3><p>Foque nestas 3 competências para alavancar seu perfil:</p><ul>`;
+        let tipsHTML = `<h3>🎓 Consultoria do Prof. Ricardo de Faria Barros</h3><p>Foque nestas 3 competências. Dicas alinhadas à sua aula:</p><ul>`;
         const actions = {
-          'Autoconsideração': 'Pratique autocompaixão: substitua "falhei" por "estou aprendendo".',
-          'Autoconsciência Emocional': 'Diário de 3 linhas: Situação → Emoção → Efeito.',
-          'Assertividade': 'Estrutura: "Sinto X quando Y, porque Z. Gostaria de W."',
-          'Independência': 'Confie no seu norte interno antes de buscar validação externa.',
-          'Autorrealização': 'Alinhe 1 atividade semanal ao seu propósito maior.',
-          'Empatia': 'Escuta reflexiva: "Se entendi, você está sentindo X. É isso?"',
-          'Responsabilidade Social': 'Pergunte: "Como isso impacta o coletivo além do meu KPI?"',
-          'Relacionamento Interpessoal': 'Check-in relacional semanal: 5 min de qualidade.',
-          'Tolerância ao Estresse': 'Técnica STOP: Pare, Respire, Observe, Prossiga.',
-          'Controle de Impulsos': 'Regra dos 10s. Respire antes de responder.',
-          'Teste de Realidade': 'Busque evidências concretas antes de tirar conclusões.',
-          'Flexibilidade': 'Plano B é sinal de inteligência, não de fraqueza.',
-          'Resolução de Problemas': '3P: Problema → Possibilidades → Próximo passo.',
-          'Otimismo': 'Foco no controlável. "O que posso aprender agora?"',
-          'Felicidade': 'Gratidão micro: 1 momento de satisfação real ao dia.'
+          'Autoavaliação (Self-Regard)': '📝 <strong>Dica da Aula:</strong> Faça um inventário honesto de suas forças técnicas; aceite feedbacks sem que isso destrua sua autoconfiança global. <br>💼 <strong>Trabalho:</strong> Antes de reuniões, anote 1 ponto forte. <br>👥 <strong>Social:</strong> Evite desculpas excessivas.',
+          'Autoconsciência Emocional': '📝 <strong>Dica da Aula:</strong> Pratique a "nomeação" precisa do que sente antes de entrar em reuniões difíceis. <br>💼 <strong>Trabalho:</strong> Ao receber feedback, pergunte: "O que isso diz sobre meu impacto?". <br>👥 <strong>Social:</strong> Identifique sua "emoção sinal" e pause.',
+          'Assertividade': '📝 <strong>Dica da Aula:</strong> Expresse discordâncias focando no problema do projeto, nunca na pessoa. <br>💼 <strong>Trabalho:</strong> Use "não posso aceitar esse prazo" em vez de "tá difícil". <br>👥 <strong>Social:</strong> Pratique dizer "preciso pensar".',
+          'Independência': '📝 <strong>Dica da Aula:</strong> Tome decisões baseadas em seus critérios técnicos, sem depender excessivamente da aprovação alheia. <br>💼 <strong>Trabalho:</strong> Apresente soluções: "Identifiquei X, proponho Y". <br>👥 <strong>Social:</strong> Tenha 1 atividade reserva em viagens.',
+          'Autorrealização': '📝 <strong>Dica da Aula:</strong> Busque ativamente tarefas no trabalho que se conectem com seus valores pessoais profundos. <br>💼 <strong>Trabalho:</strong> Pergunte: "Como meu projeto impacta a meta maior?". <br>👥 <strong>Social:</strong> Reserve 2h semanais para um hobby.',
+          'Empatia': '📝 <strong>Dica da Aula:</strong> Pratique a escuta ativa absoluta. Tente compreender a perspectiva do colega antes de formular sua resposta. <br>💼 <strong>Trabalho:</strong> Em 1:1s: "Como está sua energia?". <br>👥 <strong>Social:</strong> "Quer desabafar ou quer ajuda?".',
+          'Responsabilidade Social': '📝 <strong>Dica da Aula:</strong> Envolva-se em iniciativas coletivas ou seja mentor de talentos mais jovens. <br>💼 <strong>Trabalho:</strong> Elogie publicamente quem te ajudou. <br>👥 <strong>Social:</strong> Redirecione fofoca com respeito.',
+          'Relacionamento Interpessoal': '📝 <strong>Dica da Aula:</strong> Invista tempo em networking genuíno, criando laços de confiança em vez de apenas conexões transacionais. <br>💼 <strong>Trabalho:</strong> Canal "não-urgente" para vitórias. <br>👥 <strong>Social:</strong> Mande 1 mensagem sem expectativa.',
+          'Tolerância ao Estresse': '📝 <strong>Dica da Aula:</strong> Crie "micro-pausas" estratégicas durante o expediente para descompressão neurológica e recarga de foco. <br>💼 <strong>Trabalho:</strong> 15 min/dia para "limpeza mental". <br>👥 <strong>Social:</strong> Use filas/trânsito para expandir sua visão.',
+          'Controle de Impulsos': '📝 <strong>Dica da Aula:</strong> Adote a regra das 2 horas: nunca responda a um e-mail inflamatório no calor do momento. <br>💼 <strong>Trabalho:</strong> Rascunhe e-mails críticos e salve. <br>👥 <strong>Social:</strong> Espere 24h antes de compras por impulso.',
+          'Teste de Realidade': '📝 <strong>Dica da Aula:</strong> Diante de uma crise corporativa, anote apenas fatos objetivos em um papel, separando-os das interpretações catastróficas. <br>💼 <strong>Trabalho:</strong> Peça dados antes de suposições. <br>👥 <strong>Social:</strong> Não assuma intenções. Pergunte.',
+          'Flexibilidade': '📝 <strong>Dica da Aula:</strong> Esteja emocionalmente disposto a abandonar uma "ideia de estimação" quando os dados provarem o contrário. <br>💼 <strong>Trabalho:</strong> Debrief rápido ao mudar de projeto. <br>👥 <strong>Social:</strong> Proponha alternativas mantendo a essência.',
+          'Resolução de Problemas': '📝 <strong>Dica da Aula:</strong> Ao abordar conflitos de equipe, liste mapeie tanto as barreiras técnicas quanto as tensões interpessoais não ditas. <br>💼 <strong>Trabalho:</strong> Leve 2 opções + recomendação. <br>👥 <strong>Social:</strong> Defina o problema real por trás da queixa.',
+          'Otimismo': '📝 <strong>Dica da Aula:</strong> Treine sua mente para focar exclusivamente naquilo que está sob seu controle durante períodos de reestruturação na empresa. <br>💼 <strong>Trabalho:</strong> "Como mitigar os 20% de risco?". <br>👥 <strong>Social:</strong> Registre 1 micro-vitória ao final do dia.',
+          'Felicidade': '📝 <strong>Dica da Aula:</strong> Celebre pequenas vitórias diárias. O bem-estar subjetivo é o maior impulsionador silencioso da produtividade a longo prazo. <br>💼 <strong>Trabalho:</strong> Celebre entregas na quarta, não só na sexta. <br>👥 <strong>Social:</strong> Permita-se "não produzir" sem culpa.'
         };
-        sorted.forEach(f => { tipsHTML += `<li><strong>${f.name}</strong> (${f.score}/21) → ${actions[f.name]}</li>`; });
-        tipsHTML += `</ul><div class="quote-prof"><strong>💡 Palavra do Professor:</strong><em>"Inteligência emocional não é dom. É disciplina. Escolha UMA competência, pratique por 21 dias e meça a diferença. Traga seus insights para a próxima aula. Não compartilhe este link, é seu espaço seguro."</em></div>`;
+        sorted.forEach(f => { tipsHTML += `<li><strong>${f.name}</strong> (${f.score}/28) → ${actions[f.name]}</li>`; });
+        tipsHTML += `</ul><div class="quote-prof"><strong>💡 Palavra do Professor:</strong><em>"A autogestão não é ferramenta de produtividade, mas fator de proteção à saúde mental. Escolha UMA competência, pratique por 21 dias e meça a diferença. Não compartilhe este link, é seu espaço seguro."</em></div>`;
         document.getElementById('consultoriaTips').innerHTML = tipsHTML;
 
         document.getElementById('results').style.display = 'block';
-        document.getElementById('results').scrollIntoView({behavior:'smooth'});
+        document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
       });
     });
+
+    function gerarPDF() {
+      const nome = document.getElementById('nomeAluno').value.trim() || 'Aluno(a)';
+      const dataRaw = document.getElementById('dataAvaliacao').value;
+      const data = dataRaw ? new Date(dataRaw + 'T00:00:00').toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR');
+      
+      document.getElementById('printNome').textContent = nome;
+      document.getElementById('printData').textContent = data;
+      document.getElementById('printDataFooter').textContent = `${data} às ${new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
+      
+      document.getElementById('results').style.display = 'block';
+      setTimeout(() => window.print(), 300);
+    }
   </script>
 </body>
 </html>
